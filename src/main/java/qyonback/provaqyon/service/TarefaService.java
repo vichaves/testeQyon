@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import qyonback.provaqyon.domain.Tarefa;
 import qyonback.provaqyon.domain.TarefaStatusEnum;
-import qyonback.provaqyon.requests.TarefaDTO;
-import qyonback.provaqyon.requests.TarefaPostRequestBody;
-import qyonback.provaqyon.requests.TarefaPutRequestBody;
+import qyonback.provaqyon.dto.TarefaDTO;
 import qyonback.provaqyon.repository.TarefaRepository;
 import qyonback.provaqyon.util.DateUtil;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +38,7 @@ public class TarefaService {
                 .nome(tarefaDTO.getNome())
                 .descricao(tarefaDTO.getDescricao())
                 .status(TarefaStatusEnum.NAO_INICIADO)
-                .data(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()))
+                .dataExecucao(tarefaDTO.getDataExecucao())
                 .build());
     }
 

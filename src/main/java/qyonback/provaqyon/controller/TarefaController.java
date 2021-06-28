@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import qyonback.provaqyon.domain.Tarefa;
-import qyonback.provaqyon.domain.TarefaStatusEnum;
-import qyonback.provaqyon.requests.TarefaDTO;
-import qyonback.provaqyon.requests.TarefaPutRequestBody;
+import qyonback.provaqyon.dto.TarefaDTO;
+import qyonback.provaqyon.dto.TarefaUpdateDTO;
 import qyonback.provaqyon.service.TarefaService;
 
 import java.util.List;
@@ -39,9 +38,9 @@ public class TarefaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{id}/{status}")
-    public ResponseEntity<Void> replace(@PathVariable Integer id, @PathVariable TarefaStatusEnum tarefaStatusEnum){
-        tarefaService.replace(id, tarefaStatusEnum);
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody TarefaUpdateDTO tarefaUpdateDTO){
+        tarefaService.replace(tarefaUpdateDTO.getId(), tarefaUpdateDTO.getStatus());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

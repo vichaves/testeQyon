@@ -1,4 +1,4 @@
-package qyonback.provaqyon.requests;
+package qyonback.provaqyon.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,10 +8,7 @@ import qyonback.provaqyon.domain.TarefaStatusEnum;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TarefaDTO {
+public class TarefaUpdateDTO {
     private Integer id;
-    private String nome;
-    private String descricao;
     private TarefaStatusEnum status;
-    private String data;
 }

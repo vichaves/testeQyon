@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import qyonback.provaqyon.requests.TarefaDTO;
+import qyonback.provaqyon.dto.TarefaDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -29,7 +29,7 @@ public class Tarefa {
 
     private TarefaStatusEnum status;
 
-    private String data;
+    private Instant dataExecucao;
 
     public Tarefa dtoToEntity(TarefaDTO tarefaDTO){
         return Tarefa.builder()
@@ -37,7 +37,7 @@ public class Tarefa {
                 .nome(tarefaDTO.getNome())
                 .descricao(tarefaDTO.getDescricao())
                 .status(tarefaDTO.getStatus())
-                .data(tarefaDTO.getData())
+                .dataExecucao(tarefaDTO.getDataExecucao())
                 .build();
     }
 }
