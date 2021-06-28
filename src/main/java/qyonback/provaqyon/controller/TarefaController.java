@@ -1,12 +1,12 @@
 package qyonback.provaqyon.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import qyonback.provaqyon.domain.Tarefa;
-import qyonback.provaqyon.requests.TarefaPostRequestBody;
+import qyonback.provaqyon.domain.TarefaStatusEnum;
+import qyonback.provaqyon.requests.TarefaDTO;
 import qyonback.provaqyon.requests.TarefaPutRequestBody;
 import qyonback.provaqyon.service.TarefaService;
 
@@ -29,8 +29,8 @@ public class TarefaController {
     }
 
     @PostMapping
-    public ResponseEntity<Tarefa> save(@RequestBody TarefaPostRequestBody tarefaPostRequestBody){
-        return new ResponseEntity<>(tarefaService.save(tarefaPostRequestBody), HttpStatus.CREATED);
+    public ResponseEntity<Tarefa> save(@RequestBody TarefaDTO tarefaDTO){
+        return new ResponseEntity<>(tarefaService.save(tarefaDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -39,9 +39,9 @@ public class TarefaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody TarefaPutRequestBody tarefaPutRequestBody){
-        tarefaService.replace(tarefaPutRequestBody);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping(path = "/{id}/{status}")
+    public ResponseEntity<Void> replace(@PathVariable Integer id, @PathVariable TarefaStatusEnum tarefaStatusEnum){
+        tarefaService.replace(id, tarefaStatusEnum);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

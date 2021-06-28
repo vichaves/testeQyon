@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import qyonback.provaqyon.domain.Tarefa;
+import qyonback.provaqyon.domain.TarefaStatusEnum;
+import qyonback.provaqyon.requests.TarefaDTO;
 import qyonback.provaqyon.requests.TarefaPostRequestBody;
 import qyonback.provaqyon.requests.TarefaPutRequestBody;
 import qyonback.provaqyon.repository.TarefaRepository;
@@ -12,6 +14,7 @@ import qyonback.provaqyon.util.DateUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +31,14 @@ public class TarefaService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tarefa não existe"));
     }
 
-    public Tarefa save(TarefaPostRequestBody tarefaPostRequestBody){
+    public Tarefa save(TarefaDTO tarefaDTO){
+        if(Objects.nonNull(tarefaDTO.getId())){
+            throw new RuntimeException("A tarefa não pode possuir ID, neste caso utilize API de PUT.");
+        }
         return tarefaRepository.save(Tarefa.builder()
-                .nome(tarefaPostRequestBody.getNome())
-                .descricao(tarefaPostRequestBody.getDescricao())
-                .status("Não iniciado")
+                .nome(tarefaDTO.getNome())
+                .descricao(tarefaDTO.getDescricao())
+                .status(TarefaStatusEnum.NAO_INICIADO)
                 .data(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()))
                 .build());
     }
@@ -41,15 +47,12 @@ public class TarefaService {
         tarefaRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    public void replace(TarefaPutRequestBody tarefaPutRequestBody){
-        Tarefa tarefaSalva = findByIdOrThrowBadRequestException(tarefaPutRequestBody.getId());
-        Tarefa tarefa = Tarefa.builder()
-                .id(tarefaSalva.getId())
-                .nome(tarefaSalva.getNome())
-                .descricao(tarefaSalva.getDescricao())
-                .status(tarefaPutRequestBody.getStatus())
-                .data(tarefaSalva.getData())
-                .build();
-        tarefaRepository.save(tarefa);
+    public void replace(Integer id, TarefaStatusEnum tarefaStatusEnum){
+        Tarefa tarefaSalva = findByIdOrThrowBadRequestException(id);
+        if(Objects.isNull(tarefaSalva)) {
+            throw new RuntimeException("A tarefa não foi encontrada.");
+        }
+        tarefaSalva.setStatus(tarefaStatusEnum);
+        tarefaRepository.save(tarefaSalva);
     }
 }
