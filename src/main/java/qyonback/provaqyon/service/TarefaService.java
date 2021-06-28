@@ -7,11 +7,10 @@ import org.springframework.web.server.ResponseStatusException;
 import qyonback.provaqyon.domain.Tarefa;
 import qyonback.provaqyon.requests.TarefaPostRequestBody;
 import qyonback.provaqyon.requests.TarefaPutRequestBody;
-import qyonback.provaqyon.ropository.TarefaRepository;
+import qyonback.provaqyon.repository.TarefaRepository;
 import qyonback.provaqyon.util.DateUtil;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
